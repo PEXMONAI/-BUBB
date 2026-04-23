@@ -1,0 +1,1012 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>$BUBB - Pop The Bubble | Make PumpFun Fun Again</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bubble-pink: #FF6B9D;
+            --bubble-blue: #4ECDC4;
+            --bubble-yellow: #FFD93D;
+            --bubble-purple: #A78BFA;
+            --bg-gradient: linear-gradient(180deg, #E0F7FA 0%, #FFF0F5 30%, #F8E1E7 60%, #E1F5FE 100%);
+            --text-dark: #2D3748;
+            --text-light: #718096;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-dark);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Floating Background Bubbles */
+        .bubble {
+            position: fixed;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(78, 205, 196, 0.2));
+            border: 1px solid rgba(255,255,255,0.6);
+            box-shadow: 0 0 20px rgba(78, 205, 196, 0.3), inset 0 0 20px rgba(255,255,255,0.5);
+            animation: float-up linear infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes float-up {
+            0% { transform: translateY(100vh) scale(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { transform: translateY(-100vh) scale(1.2) rotate(360deg); opacity: 0; }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 2px solid rgba(78, 205, 196, 0.2);
+        }
+
+        .logo {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.2rem;
+            background: linear-gradient(135deg, var(--bubble-pink), var(--bubble-blue), var(--bubble-yellow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            padding: 8px 18px;
+            border-radius: 25px;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255, 107, 157, 0.15);
+            color: var(--bubble-pink);
+        }
+
+        /* Twitter Button Style */
+        .twitter-btn {
+            background: #1DA1F2 !important;
+            color: white !important;
+            padding: 12px 28px !important;
+            border-radius: 30px !important;
+            font-weight: 800 !important;
+            box-shadow: 0 4px 15px rgba(29, 161, 242, 0.4);
+            transition: all 0.3s !important;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .twitter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(29, 161, 242, 0.6);
+            background: #0d8ecf !important;
+        }
+
+        .twitter-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .social-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(255,107,157,0.1), rgba(78,205,196,0.1));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            border: 1px solid rgba(78, 205, 196, 0.3);
+        }
+
+        .social-icon:hover {
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 4px 12px rgba(78, 205, 196, 0.3);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 40px 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            max-width: 1300px;
+            width: 100%;
+            align-items: center;
+        }
+
+        .hero-text {
+            z-index: 10;
+        }
+
+        .hero-text h1 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 5rem;
+            line-height: 1.05;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--bubble-pink), var(--bubble-blue), var(--bubble-yellow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient-shift 4s ease infinite;
+            background-size: 300% 300%;
+            letter-spacing: -2px;
+        }
+
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .hero-text .subtitle {
+            font-size: 1.6rem;
+            color: var(--text-light);
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        .hero-text .description {
+            font-size: 1.15rem;
+            line-height: 1.9;
+            color: var(--text-dark);
+            margin-bottom: 40px;
+            max-width: 520px;
+            opacity: 0.9;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 18px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            padding: 16px 42px;
+            border-radius: 35px;
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.15rem;
+            text-decoration: none;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cta-twitter {
+            background: #1DA1F2;
+            color: white;
+            box-shadow: 0 6px 25px rgba(29, 161, 242, 0.4);
+        }
+
+        .cta-twitter:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 10px 35px rgba(29, 161, 242, 0.6);
+            background: #0d8ecf;
+        }
+
+        .cta-twitter svg {
+            width: 22px;
+            height: 22px;
+            fill: white;
+        }
+
+        .cta-secondary {
+            background: white;
+            color: var(--bubble-pink);
+            border: 3px solid var(--bubble-pink);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .cta-secondary:hover {
+            background: var(--bubble-pink);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        /* Hero Character */
+        .hero-character {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .character-container {
+            width: 500px;
+            height: 500px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mascot-img {
+            width: 380px;
+            height: auto;
+            border-radius: 30px;
+            filter: drop-shadow(0 20px 40px rgba(255, 107, 157, 0.3));
+            animation: mascot-float 4s ease-in-out infinite;
+            transition: all 0.3s;
+        }
+
+        .mascot-img:hover {
+            filter: drop-shadow(0 30px 50px rgba(255, 107, 157, 0.5));
+            transform: scale(1.05);
+        }
+
+        @keyframes mascot-float {
+            0%, 100% { transform: translateY(0) rotate(-2deg); }
+            50% { transform: translateY(-25px) rotate(2deg); }
+        }
+
+        .mascot-glow {
+            position: absolute;
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(255,107,157,0.3) 0%, rgba(78,205,196,0.2) 50%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(40px);
+            animation: glow-pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes glow-pulse {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        /* Story Section */
+        .story-section {
+            padding: 100px 40px;
+            position: relative;
+        }
+
+        .story-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .story-visual {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .story-mascot {
+            width: 320px;
+            height: auto;
+            border-radius: 25px;
+            filter: drop-shadow(0 15px 30px rgba(78, 205, 196, 0.3));
+            animation: mascot-float 5s ease-in-out infinite;
+            animation-delay: 1s;
+        }
+
+        .story-text h2 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 3.2rem;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, var(--bubble-pink), var(--bubble-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+        }
+
+        .story-text p {
+            font-size: 1.15rem;
+            line-height: 1.9;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+        }
+
+        .story-text .highlight {
+            background: linear-gradient(120deg, rgba(255, 107, 157, 0.2) 0%, rgba(78, 205, 196, 0.2) 100%);
+            padding: 3px 10px;
+            border-radius: 8px;
+            font-weight: 800;
+            color: var(--bubble-pink);
+        }
+
+        .story-cta {
+            font-weight: 900;
+            font-size: 1.2rem;
+            color: var(--bubble-pink);
+            margin-top: 25px;
+        }
+
+        /* Tokenomics Section */
+        .tokenomics-section {
+            padding: 100px 40px;
+            position: relative;
+        }
+
+        .tokenomics-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .tokenomics-label {
+            background: white;
+            border-radius: 25px;
+            padding: 45px;
+            box-shadow: 0 25px 70px rgba(0,0,0,0.08);
+            transform: rotate(-2deg);
+            border: 3px solid var(--bubble-blue);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tokenomics-label::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(78, 205, 196, 0.05) 0%, transparent 70%);
+        }
+
+        .tokenomics-label h3 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.2rem;
+            color: var(--bubble-blue);
+            margin-bottom: 20px;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        .nutrition-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 14px 0;
+            border-bottom: 2px dashed #E2E8F0;
+            font-size: 1.05rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .nutrition-row:last-child {
+            border-bottom: none;
+        }
+
+        .nutrition-row .label {
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .nutrition-row .value {
+            font-weight: 800;
+            color: var(--bubble-pink);
+        }
+
+        .barcode {
+            margin-top: 25px;
+            height: 55px;
+            background: repeating-linear-gradient(
+                90deg,
+                #2D3748 0px,
+                #2D3748 2px,
+                transparent 2px,
+                transparent 5px,
+                #2D3748 5px,
+                #2D3748 9px,
+                transparent 9px,
+                transparent 12px
+            );
+            opacity: 0.7;
+            border-radius: 4px;
+        }
+
+        .ca-text {
+            text-align: center;
+            margin-top: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .tokenomics-text h2 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 3.2rem;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, var(--bubble-yellow), var(--bubble-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+        }
+
+        .tokenomics-text p {
+            font-size: 1.15rem;
+            line-height: 1.9;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+        }
+
+        /* Gallery Section */
+        .gallery-section {
+            padding: 100px 40px;
+            text-align: center;
+        }
+
+        .gallery-section h2 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 3.2rem;
+            margin-bottom: 50px;
+            background: linear-gradient(135deg, var(--bubble-pink), var(--bubble-yellow), var(--bubble-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 35px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .gallery-item {
+            background: white;
+            border-radius: 30px;
+            padding: 35px 25px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.12);
+        }
+
+        .gallery-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .gallery-item:hover::before {
+            opacity: 1;
+        }
+
+        /* Yellow BUBB */
+        .gallery-item.yellow::before {
+            background: linear-gradient(90deg, #FFD93D, #FFA500);
+        }
+        .gallery-item.yellow:hover {
+            border-color: #FFD93D;
+        }
+        .gallery-item.yellow .h3-en {
+            color: #FFA500;
+        }
+
+        /* Blue BUBB */
+        .gallery-item.blue::before {
+            background: linear-gradient(90deg, #4ECDC4, #45B7D1);
+        }
+        .gallery-item.blue:hover {
+            border-color: #4ECDC4;
+        }
+        .gallery-item.blue .h3-en {
+            color: #4ECDC4;
+        }
+
+        /* Pink BUBB */
+        .gallery-item.pink::before {
+            background: linear-gradient(90deg, #FF6B9D, #FF8E53);
+        }
+        .gallery-item.pink:hover {
+            border-color: #FF6B9D;
+        }
+        .gallery-item.pink .h3-en {
+            color: #FF6B9D;
+        }
+
+        .gallery-mascot {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
+            transition: all 0.3s;
+            padding: 10px;
+        }
+
+        .gallery-item.yellow .gallery-mascot {
+            background: linear-gradient(135deg, #FFF9E6, #FFE4B5);
+        }
+        .gallery-item.blue .gallery-mascot {
+            background: linear-gradient(135deg, #E0F7FA, #B2EBF2);
+        }
+        .gallery-item.pink .gallery-mascot {
+            background: linear-gradient(135deg, #FFF0F5, #FFD1DC);
+        }
+
+        .gallery-item:hover .gallery-mascot {
+            transform: scale(1.1) rotate(5deg);
+            filter: drop-shadow(0 15px 30px rgba(0,0,0,0.2));
+        }
+
+        .mascot-yellow {
+            filter: sepia(1) saturate(3) hue-rotate(-10deg) brightness(1.1) contrast(1.1);
+        }
+
+        .mascot-blue {
+            filter: sepia(0.3) saturate(2) hue-rotate(140deg) brightness(1.05);
+        }
+
+        .mascot-pink {
+            filter: sepia(0.2) saturate(1.5) hue-rotate(340deg) brightness(1.05);
+        }
+
+        .gallery-item h3 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.4rem;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+        }
+
+        .gallery-item .h3-en {
+            font-size: 1rem;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .gallery-item p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Footer CTA */
+        .footer-cta {
+            padding: 120px 40px;
+            text-align: center;
+            background: linear-gradient(180deg, transparent 0%, rgba(255, 107, 157, 0.08) 50%, rgba(78, 205, 196, 0.08) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer-cta h2 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 4rem;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, var(--bubble-pink), var(--bubble-yellow), var(--bubble-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -2px;
+        }
+
+        .footer-cta p {
+            font-size: 1.3rem;
+            color: var(--text-light);
+            margin-bottom: 40px;
+            max-width: 550px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        .footer-social {
+            display: flex;
+            justify-content: center;
+            gap: 18px;
+            margin-top: 50px;
+        }
+
+        .footer-social a {
+            width: 55px;
+            height: 55px;
+            border-radius: 18px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 1.4rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .footer-social a:hover {
+            transform: translateY(-6px) scale(1.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border-color: var(--bubble-pink);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero-content,
+            .story-content,
+            .tokenomics-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-text h1 {
+                font-size: 3.5rem;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .character-container {
+                width: 350px;
+                height: 350px;
+            }
+
+            .mascot-img {
+                width: 280px;
+            }
+
+            .story-mascot {
+                width: 260px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 12px 20px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding: 90px 20px 40px;
+            }
+
+            .hero-text h1 {
+                font-size: 2.8rem;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .story-text h2,
+            .tokenomics-text h2,
+            .gallery-section h2,
+            .footer-cta h2 {
+                font-size: 2.2rem;
+            }
+
+            .mascot-img {
+                width: 220px;
+            }
+
+            .gallery-mascot {
+                width: 160px;
+                height: 160px;
+            }
+        }
+
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.9s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--bubble-pink), var(--bubble-yellow), var(--bubble-blue));
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, var(--bubble-blue), var(--bubble-yellow), var(--bubble-pink));
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <!-- Floating Background Bubbles -->
+    <div id="bubbles-container"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">$BUBB</div>
+        <div class="nav-links">
+            <a href="#story">Story</a>
+            <a href="#tokenomics">Tokenomics</a>
+            <a href="#gallery">BUBBs</a>
+            <a href="https://x.com/BUBBrun" target="_blank" class="twitter-btn">
+                <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                Twitter
+            </a>
+            <div class="social-icons">
+                <a href="#" class="social-icon" style="color: #1DA1F2;">𝕏</a>
+                <a href="#" class="social-icon" style="color: #0088cc;">✈</a>
+                <a href="#" class="social-icon" style="color: #7289DA;">💬</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>POP THE<br>BUBBLE</h1>
+                <p class="subtitle">Make PumpFun Fun Again</p>
+                <p class="description">
+                    $BUBB is a Solana meme coin and movement for degens, dreamers, and bubble-poppers 
+                    who believe launchpad culture should be loud, fair, and unapologetically chaotic on-chain.
+                </p>
+                <div class="hero-cta">
+                    <a href="https://x.com/BUBBrun" target="_blank" class="cta-btn cta-twitter">
+                        <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        Follow on Twitter
+                    </a>
+                    <a href="#story" class="cta-btn cta-secondary">Read Story</a>
+                </div>
+            </div>
+            <div class="hero-character">
+                <div class="character-container">
+                    <div class="mascot-glow"></div>
+                    <img src="https://kimi-web-img.moonshot.cn/img/images.stockcake.com/5d7651bbfb1fffb51f1028c7822a617afc995f49.jpg" 
+                         alt="BUBB Mascot" class="mascot-img">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Story Section -->
+    <section class="story-section" id="story">
+        <div class="story-content fade-in">
+            <div class="story-visual">
+                <img src="https://kimi-web-img.moonshot.cn/img/images.stockcake.com/5d7651bbfb1fffb51f1028c7822a617afc995f49.jpg" 
+                     alt="BUBB Story" class="story-mascot">
+            </div>
+            <div class="story-text">
+                <h2>Why Pop Bubbles?</h2>
+                <p>
+                    $BUBB (Bubble) is a Solana meme coin dedicated to everyone who still believes 
+                    <span class="highlight">launchpad culture</span> can be fun, fast, and fair: 
+                    memes in the feed, volume on the chart, and community in control.
+                </p>
+                <p>
+                    We're not here to pitch you a meaningless roadmap. This is a call to arms: 
+                    bring back attention to how tokens launch and holders engage — transparent supply mechanics, 
+                    no corporate mascot packaging, just the pure fun that made Pump.fun projects exciting in the first place.
+                </p>
+                <p>
+                    Whether you're here for the pumps, the memes, or the community, 
+                    you're not just watching the chart — <span class="highlight">you're part of the $BUBB moment</span>.
+                </p>
+                <p class="story-cta">
+                    Join $BUBB on Solana. Pop the bubble. Make PumpFun fun again.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tokenomics Section -->
+    <section class="tokenomics-section" id="tokenomics">
+        <div class="tokenomics-content fade-in">
+            <div class="tokenomics-text">
+                <h2>BUBBANOMICS</h2>
+                <p>
+                    No hidden allocations. No team tokens. No nonsense. 
+                    Just a fair launch with the community at the center.
+                </p>
+                <p>
+                    Every bubble pops eventually — but $BUBB is built to float higher. 
+                    LP burned. Supply fixed. Chart driven by pure degen energy.
+                </p>
+            </div>
+            <div class="tokenomics-label">
+                <h3>BUBBANOMICS</h3>
+                <div class="nutrition-row">
+                    <span class="label">Serving Size</span>
+                    <span class="value">1 $BUBB</span>
+                </div>
+                <div class="nutrition-row">
+                    <span class="label">Total Supply</span>
+                    <span class="value">1,000,000,000</span>
+                </div>
+                <div class="nutrition-row">
+                    <span class="label">Launch Type</span>
+                    <span class="value">Fair Launch on PUMP.FUN</span>
+                </div>
+                <div class="nutrition-row">
+                    <span class="label">LP Status</span>
+                    <span class="value">BURNED 🔥</span>
+                </div>
+                <div class="nutrition-row">
+                    <span class="label">Tax</span>
+                    <span class="value">0% / 0%</span>
+                </div>
+                <div class="nutrition-row">
+                    <span class="label">Ownership</span>
+                    <span class="value">RENOUNCED</span>
+                </div>
+                <div class="barcode"></div>
+                <p class="ca-text">CA: TBA (Updated at Launch)</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery-section" id="gallery">
+        <h2>Meet The BUBBs</h2>
+        <div class="gallery-grid fade-in">
+            <div class="gallery-item yellow">
+                <img src="https://kimi-web-img.moonshot.cn/img/images.stockcake.com/5d7651bbfb1fffb51f1028c7822a617afc995f49.jpg" 
+                     alt="Sunny BUBB" class="gallery-mascot mascot-yellow">
+                <h3>Sunny BUBB</h3>
+                <p class="h3-en">Always bullish, always sunny. FUD can't touch this.</p>
+                <p>When the chart is green and vibes are immaculate</p>
+            </div>
+
+            <div class="gallery-item blue">
+                <img src="https://kimi-web-img.moonshot.cn/img/images.stockcake.com/5d7651bbfb1fffb51f1028c7822a617afc995f49.jpg" 
+                     alt="Cool BUBB" class="gallery-mascot mascot-blue">
+                <h3>Cool BUBB</h3>
+                <p class="h3-en">Zero emotions, maximum conviction. Never selling.</p>
+                <p>Chart looks better with shades on</p>
+            </div>
+
+            <div class="gallery-item pink">
+                <img src="https://kimi-web-img.moonshot.cn/img/images.stockcake.com/5d7651bbfb1fffb51f1028c7822a617afc995f49.jpg" 
+                     alt="Sleepy BUBB" class="gallery-mascot mascot-pink">
+                <h3>Sleepy BUBB</h3>
+                <p class="h3-en">Waiting for the next 10x pump. Patience is key.</p>
+                <p>ZZZ... dreaming of green candles</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer CTA -->
+    <section class="footer-cta">
+        <h2 class="fade-in">Ready to Pop?</h2>
+        <p class="fade-in">Don't just watch the bubbles float by. Be the one who pops them.</p>
+        <a href="https://x.com/BUBBrun" target="_blank" class="cta-btn cta-twitter fade-in" style="font-size: 1.3rem; padding: 20px 55px;">
+            <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            Follow on Twitter
+        </a>
+        <div class="footer-social fade-in">
+            <a href="#" style="color: #1DA1F2;">𝕏</a>
+            <a href="#" style="color: #0088cc;">✈</a>
+            <a href="#" style="color: #7289DA;">💬</a>
+            <a href="#" style="color: #E53E3E;">📊</a>
+        </div>
+    </section>
+
+    <script>
+        function createBubbles() {
+            const container = document.getElementById('bubbles-container');
+            const bubbleCount = 25;
+            for (let i = 0; i < bubbleCount; i++) {
+                const bubble = document.createElement('div');
+                bubble.className = 'bubble';
+                const size = Math.random() * 50 + 15;
+                bubble.style.width = size + 'px';
+                bubble.style.height = size + 'px';
+                bubble.style.left = Math.random() * 100 + 'vw';
+                bubble.style.animationDuration = (Math.random() * 8 + 12) + 's';
+                bubble.style.animationDelay = (Math.random() * 8) + 's';
+                container.appendChild(bubble);
+            }
+        }
+
+        function handleScroll() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            fadeElements.forEach(element => {
+                const rect = element.getBoundingClientRect();
+                if (rect.top < window.innerHeight * 0.85) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        createBubbles();
+        handleScroll();
+        window.addEventListener('scroll', handleScroll);
+    </script>
+</body>
+</html>
